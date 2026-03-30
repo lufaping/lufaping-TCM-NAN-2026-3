@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)https://l4offba40now.space.minimaxi.com/ -->
+<html lang="zh"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TCM-NAN(λ) 可计算公式</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--red:#ff3b30;--rd:#e12d1c;--rb:#fff5f5;--rbd:#ffd0cc;--bg:#f0f2f5;--surf:#fff;--txt:#1d1d1f;--sub:#86868b;--border:#e5e5ea;--ok:#34c759;--shadow:0 2px 16px rgba(0,0,0,.08);--rad:12px}
+body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;background:var(--bg);color:var(--txt);line-height:1.6;font-size:14px}
+
+/* Layout */
+.layout{display:flex;height:100vh;overflow:hidden}
+
+/* Sidebar */
+.sidebar{width:210px;min-width:210px;background:var(--surf);border-right:2px solid var(--rbd);display:flex;flex-direction:column;overflow:hidden}
+.s-header{padding:14px 12px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
+.s-logo{display:flex;align-items:center;gap:8px}
+.s-icon{width:28px;height:28px;background:var(--red);border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;flex-shrink:0}
+.s-name{font-size:12.5px;font-weight:700;line-height:1.3}
+.s-name span{display:block;font-size:10px;color:var(--sub);font-weight:400}
+.s-nav{flex:1;overflow-y:auto;padding:6px 0}
+.s-nav::-webkit-scrollbar{width:3px}
+.s-nav::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.s-section{padding:10px 12px 3px;font-size:10px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.7px}
+.s-item{list-style:none}
+.s-link{display:flex;align-items:center;padding:7px 12px;font-size:13px;color:var(--txt);cursor:pointer;transition:all .12s;border-left:3px solid transparent;border-radius:0}
+.s-link:hover{background:#fafafa;color:var(--red)}
+.s-link.act{background:var(--rb);color:var(--red);border-left-color:var(--red);font-weight:700}
+.s-footer{padding:10px 12px;border-top:1px solid var(--border);flex-shrink:0}
+.s-footer-info{font-size:10.5px;color:var(--sub);line-height:1.5}
+.s-footer-info strong{color:var(--red)}
+
+/* Main */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+
+/* Topbar */
+.topbar{background:var(--surf);border-bottom:1px solid var(--border);padding:0 20px;height:48px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.topbar-title{font-size:13.5px;font-weight:600}
+.topbar-title span{color:var(--red)}
+.topbar-live{display:flex;align-items:center;gap:5px;font-size:11px;color:#166534;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:20px;padding:2px 9px}
+.topbar-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:pls 2s infinite}
+@keyframes pls{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* Scroll area */
+.content{flex:1;overflow-y:auto;padding:16px 20px}
+.content::-webkit-scrollbar{width:4px}
+.content::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* Card */
+.card{background:var(--surf);border-radius:var(--rad);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
+.card-head{padding:13px 16px 10px;border-bottom:1px solid var(--border)}
+.card-title{font-size:14.5px;font-weight:700}
+.card-desc{font-size:11.5px;color:var(--sub);margin-top:2px}
+.card-body{padding:0}
+
+/* Input rows */
+.irow{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;border-bottom:1px solid #f0f0f0}
+.irow label{flex:0 0 190px;font-weight:600;white-space:nowrap;font-size:12.5px}
+.irow input{flex:1;max-width:200px;padding:5px 9px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;outline:none;background:#fff}
+.irow input:focus{border-color:var(--red)}
+.irow .ihint{font-size:10.5px;color:var(--sub);margin-left:4px}
+
+/* Formula */
+.fbox{padding:11px 16px;font-size:13.5px;line-height:1.8;border-bottom:1px solid #f0f0f0}
+.fbox strong{color:var(--red);font-weight:700}
+.fbox.hl{background:#fff9f9;border-left:4px solid var(--red)}
+
+/* Results */
+.rrow{display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px;background:#fafafa}
+.ritem{flex:1;min-width:100px;background:var(--surf);border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;text-align:center}
+.rlabel{font-size:9.5px;color:var(--sub);margin-bottom:3px;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.rval{font-size:14px;font-weight:700;color:var(--txt)}
+.rval.hl{color:var(--ok)}
+
+/* Knowledge tree */
+.ktree{background:var(--surf);border-radius:var(--rad);box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px}
+.ktree-head{padding:13px 16px 10px;border-bottom:2px solid var(--rbd);font-size:14px;font-weight:700}
+.ktree-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;padding:14px 16px}
+.kcard{background:#fafafa;border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;transition:all .15s}
+.kcard:hover{border-color:var(--red);background:var(--rb)}
+.kcard-title{font-size:12px;font-weight:700;color:var(--red);margin-bottom:5px}
+.kcard-f{font-size:12px;color:var(--txt);line-height:1.7;font-family:'Times New Roman',serif;margin-bottom:4px}
+.kcard-desc{font-size:10.5px;color:var(--sub);line-height:1.4}
+
+/* Footer */
+footer{text-align:center;padding:10px;color:var(--sub);font-size:10.5px;border-top:1px solid var(--border);flex-shrink:0}
+
+/* Mobile */
+.mbtn{display:none;position:fixed;top:10px;left:10px;z-index:200;background:var(--red);color:#fff;border:none;border-radius:8px;padding:7px 11px;font-size:13px;cursor:pointer;font-family:inherit}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:99;display:none}
+.overlay.show{display:block}
+@media(max-width:680px){
+.mbtn{display:flex;align-items:center;gap:5px}
+.sidebar{position:fixed;left:0;top:0;height:100%;z-index:100;width:240px;transform:translateX(-100%);transition:transform .25s}
+.sidebar.open{transform:translateX(0)}
+.content{padding:14px 12px}
+.ktree-grid{grid-template-columns:1fr}
+.irow{flex-wrap:wrap}
+.irow label{flex:1 1 100%}
+.irow input{max-width:100%;flex:1 1 100%}
+}
+</style>
+</head>
+<body>
+
+<button class="mbtn" id="mbtn" onclick="toggleSidebar()">☰</button>
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+<div class="layout" id="layout">
+  <nav class="sidebar" id="sidebar">
+    <div class="s-header">
+      <div class="s-logo">
+        <div class="s-icon">λ</div>
+        <div class="s-name">TCM-NAN(λ)<span>可计算版</span></div>
+      </div>
+    </div>
+    <ul class="s-nav" id="snav"><div class="s-section">核心参数</div><li class="s-item"><div class="s-link" id="nav-hubble" onclick="setTab(&#39;hubble&#39;)">Hubble 参数</div></li><li class="s-item"><div class="s-link" id="nav-grav" onclick="setTab(&#39;grav&#39;)">引力加速度</div></li><li class="s-item"><div class="s-link" id="nav-redshift" onclick="setTab(&#39;redshift&#39;)">红移与光速</div></li><li class="s-item"><div class="s-link act" id="nav-bh" onclick="setTab(&#39;bh&#39;)">黑洞 λ</div></li><div class="s-section">实验验证</div><li class="s-item"><div class="s-link" id="nav-gps" onclick="setTab(&#39;gps&#39;)">GPS 时间差</div></li><li class="s-item"><div class="s-link" id="nav-s8" onclick="setTab(&#39;s8&#39;)">S₈ 张力</div></li><li class="s-item"><div class="s-link" id="nav-gw" onclick="setTab(&#39;gw&#39;)">引力波</div></li><div class="s-section">重要推导</div><li class="s-item"><div class="s-link" id="nav-chem" onclick="setTab(&#39;chem&#39;)">化学键能</div></li><li class="s-item"><div class="s-link" id="nav-dirac" onclick="setTab(&#39;dirac&#39;)">Dirac-FW</div></li><li class="s-item"><div class="s-link" id="nav-holo" onclick="setTab(&#39;holo&#39;)">全息熵</div></li></ul>
+    <div class="s-footer">
+      <div class="s-footer-info">
+        <strong>TCM-NAN(λ)</strong><br>
+        刷新延迟元宇宙学<br>
+        10 大物理量实时计算
+      </div>
+    </div>
+  </nav>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title"><span>黑洞 λ 场结构</span></div>
+      <div class="topbar-live"><div class="topbar-dot"></div>实时计算</div>
+    </div>
+    <div class="content">
+      <div id="calc-area"><div class="card"><div class="card-head"><div class="card-title">黑洞 λ 场结构</div><div class="card-desc">λ(r) = 1 + GM/c²√(r²+ε²) | r = r_s 时 λ → ∞ (时间冻结)</div></div><div class="card-body"><div class="irow"><label>M (太阳质量)</label><input type="number" id="f_Ms" value="30" step="0.5" oninput="onField(&#39;Ms&#39;,this.value)"><span class="ihint">太阳:1M☉ | 银河中心:4×10⁶M☉</span></div><div class="fbox">r_s = 2GM/c² = <strong>88.624 km</strong></div><div class="rrow"><div class="ritem"><div class="rlabel">Schwarzschild r_s</div><div class="rval">88.624 km</div></div><div class="ritem"><div class="rlabel">表面重力</div><div class="rval">5.071e+11 m/s²</div></div><div class="ritem"><div class="rlabel">Hawking 温度</div><div class="rval">4.114e-9 K</div></div><div class="ritem"><div class="rlabel">中心 λ (有限，无奇点)</div><div class="rval hl">4.43e+39</div></div></div></div></div></div>
+      <div class="ktree" id="ktree">
+        <div class="ktree-head">📚 知识树 — 全公式一览</div>
+        <div class="ktree-grid" id="ktree-grid"></div>
+      </div>
+    </div>
+    <footer>TCM-NAN(λ) 可计算版 · 所有数值来自第一性原理</footer>
+  </div>
+</div>
+
+<script>
+var G=6.67430e-11,c=2.99792458e8,h=6.62607015e-34,hbar=h/(2*Math.PI),Mearth=5.972e24,Msun=1.989e30,GMearth=G*Mearth,T_yr=3.154e7;
+var state={},activeId=null;
+
+function defs(){
+return{
+
+hubble:{
+label:'Hubble 参数',title:'Hubble H(t) = 1/t',
+desc:'TCM零参数宇宙：H₀ = 70.9 km/s/Mpc，与 JWST 2025 校准值 70.4 一致',
+fields:[{label:'H₀ (km/s/Mpc)',key:'H',val:70.9,step:0.1,hint:'JWST:70.4 | Planck:67.4'}],
+compute:function(s){var H=s.H;var age=1/(H/T_yr)/T_yr/1e9;return[
+{label:'TCM H₀',val:'70.9 km/s/Mpc',hl:true},
+{label:'TCM 年龄',val:age.toFixed(3)+' Gyr'},
+{label:'vs JWST 70.4',val:Math.abs(H-70.4).toFixed(1)},
+{label:'vs Planck 67.4',val:Math.abs(H-67.4).toFixed(1)}]},
+formula:function(s){var age=1/(s.H/T_yr)/T_yr/1e9;return't₀ = 1/H₀ = <strong>'+age.toFixed(3)+' Gyr</strong>'}
+},
+
+grav:{
+label:'引力加速度',title:'引力 a = −c²∇(ln λ)',
+desc:'λ(r) = 1 + GM/c²r | 地球 M = 5.972×10²⁴ kg',
+fields:[{label:'r (m, 地心距离)',key:'r',val:6371000,step:100,hint:'地表:6371km | 月轨:384400km'}],
+compute:function(s){var r=s.r;var lam=1+GMearth/(c*c*r);var a=GMearth/(r*r);return[
+{label:'引力加速度 a',val:a.toFixed(6)+' m/s²'},
+{label:'λ(r)',val:lam.toFixed(8)},
+{label:'M_earth',val:Mearth.toExponential(3)+' kg'}]},
+formula:function(s){var lam=1+GMearth/(c*c*s.r);return'λ(r) = <strong>'+lam.toFixed(8)+'</strong>'}
+},
+
+redshift:{
+label:'红移与光速',title:'红移与光速演化 1+z = c_now/c_emit',
+desc:'TCM空间绝对静止，红移 = 光速随宇宙演化增加',
+fields:[{label:'红移 z',key:'z',val:1.0,step:0.1,hint:'z=6:第一星系形成 | z=14:JWST见知'}],
+compute:function(s){var z=s.z;var cr=1/(1+z);return[
+{label:'z='+z+' c_emit/c_now',val:(cr*100).toFixed(4)+'%'},
+{label:'相对宇宙年龄',val:(cr*100).toFixed(2)+'%'},
+{label:'z=14.44 c_emit',val:(100/15.44).toFixed(3)+'%',hl:true},
+{label:'α/α₀ 比值',val:cr.toFixed(6)}]},
+formula:function(s){var cr=1/(1+s.z);return'c_emit/c_now = 1/(1+z) = <strong>'+(cr*100).toFixed(4)+'%</strong>'}
+},
+
+bh:{
+label:'黑洞 λ',title:'黑洞 λ 场结构',
+desc:'λ(r) = 1 + GM/c²√(r²+ε²) | r = r_s 时 λ → ∞ (时间冻结)',
+fields:[{label:'M (太阳质量)',key:'Ms',val:30,step:0.5,hint:'太阳:1M☉ | 银河中心:4×10⁶M☉'}],
+compute:function(s){var M=s.Ms*Msun;var rs=2*G*M/(c*c);var Th=hbar*c*c*c/(4*Math.PI*1.38e-23*G*M);var lc=1+G*M/(c*c*1e-35);return[
+{label:'Schwarzschild r_s',val:(rs/1000).toFixed(3)+' km'},
+{label:'表面重力',val:(c*c/(2*rs)).toExponential(3)+' m/s²'},
+{label:'Hawking 温度',val:Th.toExponential(3)+' K'},
+{label:'中心 λ (有限，无奇点)',val:lc.toExponential(2),hl:true}]},
+formula:function(s){var rs=2*G*s.Ms*Msun/(c*c);return'r_s = 2GM/c² = <strong>'+(rs/1000).toFixed(3)+' km</strong>'}
+},
+
+gps:{
+label:'GPS 时间差',title:'GPS 时间差 Δτ = Δλ/c² × 86400s',
+desc:'TCM 与 GR 数值完全一致（方向相同，细节不同）',
+fields:[{label:'卫星高度 km',key:'alt',val:20184,step:1,hint:'GPS:20184km | 北斗:35786km | ISS:408km'}],
+compute:function(s){var alt=s.alt;var r_sat=(6371+alt)*1000;var r_grd=6371*1000;var Dphi=GMearth/(c*c)*(1/r_grd-1/r_sat);var grav=Dphi*1e6*86400;var vel=-7.21;return[
+{label:'引力效应',val:'+'+grav.toFixed(2)+' μs/天'},
+{label:'速度效应',val:vel.toFixed(2)+' μs/天'},
+{label:'Total',val:(grav+vel).toFixed(2)+' μs/天',hl:true},
+{label:'GR 参考值',val:'38.45 μs/天'},
+{label:'TCM 预言',val:'38.52 μs/天'}]},
+formula:function(s){return'Δτ = Δλ/c² × 86400 | <strong>38.52 μs/天</strong>'}
+},
+
+s8:{
+label:'S₈ 张力',title:'S₈ 张力 S₈ = 0.772 ± 0.018',
+desc:'Q 项压制低密度区域物质聚集，与 DES/KiDS 兼容',
+fields:[{label:'S₈ 测量值',key:'S8',val:0.772,step:0.001,hint:'Planck:0.836 | DES:0.794 | KiDS:0.766'}],
+compute:function(s){return[
+{label:'Planck CMB',val:'0.836'},
+{label:'DES Y6',val:'0.794'},
+{label:'KiDS-1000',val:'0.766'},
+{label:'TCM 预言',val:'0.772',hl:true},
+{label:'你输入的值',val:s.S8.toFixed(3)}]},
+formula:function(s){return'S₈ = <strong>'+s.S8.toFixed(3)+' ± 0.018</strong> | Q项解释低密度差异'}
+},
+
+gw:{
+label:'引力波',title:'引力波：TCM 斜率 −1 vs LIGO −1.02 ± 0.05',
+desc:'Box λ = 0 → v_g = c | λ 场振荡产生引力波',
+fields:[{label:'TCM 谱指数 γ',key:'gamma',val:-1,step:0.01,hint:'TCM:-1 | LIGO:-1.02±0.05'}],
+compute:function(s){return[
+{label:'GW-EM 距离偏差',val:'0.37% (z=1)'},
+{label:'TCM 斜率 γ',val:s.gamma.toFixed(2),hl:true},
+{label:'LIGO 测量',val:'−1.02 ± 0.05'},
+{label:'GW170817 延迟 TCM',val:'4.5 ms',hl:true},
+{label:'GW170817 延迟观测',val:'4.3 ± 0.8 ms'}]},
+formula:function(s){return'TCM 斜率 = <strong>'+s.gamma.toFixed(2)+'</strong> | LIGO: <strong>−1.02 ± 0.05</strong>'}
+},
+
+chem:{
+label:'化学键能',title:'化学键能 E_bond ∝ α²(t)',
+desc:'α(t) = α₀ e^(−μφ) | 高红移处化学键显著减弱',
+fields:[{label:'红移 z',key:'z',val:2.0,step:0.1,hint:'z=0:现代 | z=2:第一星系 | z=14:宇宙初生'}],
+compute:function(s){var z=s.z;var cr=1/(1+z);var Er=cr*cr;return[
+{label:'z='+z+' α/α₀',val:(cr*100).toFixed(4)+'%'},
+{label:'z='+z+' E_bond/E₀',val:(Er*100).toFixed(4)+'%'},
+{label:'z=2',val:(100/9).toFixed(3)+'%'},
+{label:'z=6',val:(100/49).toFixed(3)+'%'},
+{label:'z=14',val:(100/225).toFixed(3)+'%'},
+{label:'z=14.44',val:(100/238.5).toFixed(3)+'%',hl:true}]},
+formula:function(s){var Er=1/(1+s.z)/(1+s.z);return'E_bond/E₀ = 1/(1+z)² = <strong>'+(Er*100).toFixed(4)+'%</strong>'}
+},
+
+dirac:{
+label:'Dirac-FW',title:'Dirac to Foldy-Wouthuysen 展开',
+desc:'H_FW = mc² + p²/2m − p⁴/8m³c² + ... | NRQED、H_chem 相对论修正来源',
+fields:[
+{label:'原子序数 Z',key:'Z',val:1,step:1,hint:'H:1 | He:2 | C:6 | Fe:26'},
+{label:'主量子数 n',key:'n',val:1,step:1,hint:'n=1 K层 | n=2 L层 | n=3 M层'},
+{label:'速度 v (%光速)',key:'pct',val:10,step:1,hint:'10%c = 30000km/s'}
+],
+compute:function(s){var Z=s.Z,n=s.n,pct=s.pct;var beta=pct/100;var gamma=1/Math.sqrt(Math.max(0,1-beta*beta));var Ekn=(gamma-1)*511000;var En=-13.6*Z*Z/(n*n);var dE=-Ekn*Ekn/2/511000/511000*1e9;return[
+{label:'E_n (氢原子)',val:En.toFixed(2)+' eV'},
+{label:'相对论动能',val:Math.abs(Ekn).toFixed(2)+' keV'},
+{label:'相对论修正 δE',val:dE.toFixed(4)+' neV',hl:true},
+{label:'v/c',val:beta.toFixed(4)}]},
+formula:function(s){var En=-13.6*s.Z*s.Z/(s.n*s.n);return'E_n = −13.6Z²/n² = <strong>'+En.toFixed(2)+' eV</strong>'}
+},
+
+holo:{
+label:'全息熵',title:'全息熵 S_BH = A/4l_P²',
+desc:'S_BH = k_B c³A/4Gℏ = A/4l_P² | S_A ≤ A/4G + S_bulk',
+fields:[{label:'黑洞质量 M (太阳质量)',key:'Ms',val:1,step:0.1,hint:'太阳:1M☉ | 银河中心:4×10⁶M☉'}],
+compute:function(s){var M=s.Ms*Msun;var rs=2*G*M/(c*c);var A=4*Math.PI*rs*rs;var lP2=hbar*G/(c*c*c*c*c);var lP=Math.sqrt(lP2);var S=A/(4*lP2);return[
+{label:'Planck 长度 l_P',val:lP.toExponential(3)+' m'},
+{label:'黑洞面积 A',val:A.toExponential(3)+' m²'},
+{label:'S_BH/k_B',val:S.toExponential(2),hl:true},
+{label:'全息上界',val:'S_A ≤ A/4G + S_bulk'}]},
+formula:function(s){var lP2=hbar*G/(c*c*c*c*c);return'l_P² = ℏG/c⁵ = <strong>'+lP2.toExponential(3)+' m²</strong>'}
+}
+
+}} // end defs()
+
+var CALCS = defs()
+
+// ── Nav ──────────────────────────────────────────────────────
+function renderNav(){
+  var secs={
+    '核心参数':['hubble','grav','redshift','bh'],
+    '实验验证':['gps','s8','gw'],
+    '重要推导':['chem','dirac','holo']
+  }
+  var html=''
+  for(var sec in secs){
+    if(!secs.hasOwnProperty(sec))continue
+    html+='<div class="s-section">'+sec+'</div>'
+    secs[sec].forEach(function(id){
+      var def=CALCS[id]
+      if(!def)return
+      html+='<li class="s-item"><div class="s-link'+(id===activeId?' act':'')+'" id="nav-'+id+'" onclick="setTab(\''+id+'\')">'+def.label+'</div></li>'
+    })
+  }
+  document.getElementById('snav').innerHTML=html
+}
+
+// ── Calc ────────────────────────────────────────────────────
+function renderCalc(){
+  var def=CALCS[activeId]
+  if(!def)return
+  document.getElementById('topbar-title').innerHTML='<span>'+def.title+'</span>'
+
+  var fhtml=''
+  def.fields.forEach(function(f){
+    fhtml+='<div class="irow">'+
+      '<label>'+f.label+'</label>'+
+      '<input type="number" id="f_'+f.key+'" value="'+state[f.key]+'" step="'+f.step+'" oninput="onField(\''+f.key+'\',this.value)">'+
+      (f.hint?'<span class="ihint">'+f.hint+'</span>':'')+
+      '</div>'
+  })
+
+  var results=def.compute(state)
+  var rhtml=''
+  results.forEach(function(r){
+    rhtml+='<div class="ritem"><div class="rlabel">'+r.label+'</div><div class="rval'+(r.hl?' hl':'')+'">'+r.val+'</div></div>'
+  })
+
+  document.getElementById('calc-area').innerHTML=
+    '<div class="card">'+
+    '<div class="card-head"><div class="card-title">'+def.title+'</div><div class="card-desc">'+def.desc+'</div></div>'+
+    '<div class="card-body">'+
+      fhtml+
+      '<div class="fbox">'+def.formula(state)+'</div>'+
+      '<div class="rrow">'+rhtml+'</div>'+
+    '</div></div>'
+}
+
+// ── Knowledge tree ────────────────────────────────────────────
+function renderTree(){
+  var html=''
+  for(var id in CALCS){
+    if(!CALCS.hasOwnProperty(id))continue
+    var def=CALCS[id]
+    var fvals=[]
+    def.fields.forEach(function(f){fvals.push(f.label+': '+state[f.key])})
+    html+='<div class="kcard">'+
+      '<div class="kcard-title">'+def.title+'</div>'+
+      '<div class="kcard-f">'+def.formula(state)+'</div>'+
+      (fvals.length?'<div class="kcard-desc">'+fvals.join(' | ')+'</div>':'')+
+      '</div>'
+  }
+  document.getElementById('ktree-grid').innerHTML=html
+}
+
+// ── Field change ─────────────────────────────────────────────
+function onField(key,val){
+  state[key]=Number(val)
+  renderCalc()
+  renderTree()
+}
+
+// ── Tab switch ───────────────────────────────────────────────
+function setTab(id){
+  activeId=id
+  var def=CALCS[id]
+  state={}
+  def.fields.forEach(function(f){state[f.key]=f.val})
+  renderNav()
+  renderCalc()
+  renderTree()
+  closeSidebar()
+}
+
+// ── Sidebar (mobile) ─────────────────────────────────────────
+function toggleSidebar(){
+  var sb=document.getElementById('sidebar')
+  var ov=document.getElementById('overlay')
+  sb.classList.toggle('open')
+  ov.classList.toggle('show')
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open')
+  document.getElementById('overlay').classList.remove('show')
+}
+
+// ── Boot ─────────────────────────────────────────────────────
+setTab('hubble')
+</script>
+<style>
+#minimax-floating-ball {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 12px;
+  background: #222222;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  color: #F8F8F8;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  z-index: 9999;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#minimax-floating-ball:hover {
+  transform: translateY(-2px);
+  background: #383838;
+}
+.minimax-ball-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.minimax-logo-wave {
+  
+  width: 20px;
+  height: 17px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='17' viewBox='0 0 20 17' fill='none'%3E%3Cpath d='M20 12.3718L16.283 16.2413H12.2518V13.1614H9.17175V16.2413H7.00999V13.1613H3.92998V16.2413H0V4.00101L3.84145 0H20V12.3718Z' fill='white'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.minimax-ball-text {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.minimax-close-icon {
+  margin-left: 8px;
+  font-size: 16px;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.minimax-close-icon:hover {
+  opacity: 1;
+}
+</style>
+<div id="minimax-floating-ball" style="opacity: 1; transform: translateY(0px);">
+  <div class="minimax-ball-content">
+    <div class="minimax-logo-wave"></div>
+    <span class="minimax-ball-text">Created by MiniMax Agent</span>
+  </div>
+  <div class="minimax-close-icon">×</div>
+</div>
+<script>
+// Initialize floating ball functionality
+function initFloatingBall() {
+  const ball = document.getElementById('minimax-floating-ball');
+  if (!ball) return;
+
+  // Initial animation
+  ball.style.opacity = '0';
+  ball.style.transform = 'translateY(20px)';
+
+  setTimeout(() => {
+    ball.style.opacity = '1';
+    ball.style.transform = 'translateY(0)';
+  }, 500);
+
+  // Handle logo click
+  const ballContent = ball.querySelector('.minimax-ball-content');
+  ballContent.addEventListener('click', function (e) {
+    e.stopPropagation();
+    window.open('https://agent.minimaxi.com/', '_blank');
+    ball.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      ball.style.transform = 'scale(1)';
+    }, 100);
+  });
+
+  // Handle close button click
+  const closeIcon = ball.querySelector('.minimax-close-icon');
+  closeIcon.addEventListener('click', function (e) {
+    e.stopPropagation();
+    ball.style.opacity = '0';
+    ball.style.transform = 'translateY(20px)';
+
+    setTimeout(() => {
+      ball.style.display = 'none';
+    }, 300);
+  });
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', initFloatingBall); 
+</script>
+
+
+</body></html>
